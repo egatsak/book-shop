@@ -5,13 +5,74 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./normalize.css">
     <link rel="stylesheet" href="./styles.css">
     <title>Book shop</title>
 </head>
 
 <body>
+    <div class="container">
+        <form id="orderForm">
+            <fieldset>
+                <legend>Please fill up the form</legend>
+                <div class="name-wrapper">
+                    <label class='input-label' for="name">Name</label><input id="name" name="name" type="text">
+                    <label class='input-label' for="surname">Surname</label><input id="surname" name='surname'
+                        type="text">
+                </div>
+                <div class="address-wrapper">
+                    <label class='input-label' for="street">Street<input id="street" type="text"></label>
+                    <label class='input-label' for="houseNumber">House<input id="houseNumber" type="number"></label>
+                    <label class='input-label' for="flatNumber">Apartment<input id="flatNumber" type="number"></label>
+                </div>
+                <div class="date-wrapper">
+                    <input id='date' type="date">
+                </div>
 
+                <div class="radio-wrapper"> Payment method: <label id='cash'
+                        class="donation__radiobuttons-period__item">
+                        <input type="radio" name="paymentMethod" value="cash" checked>
+                        <span>Cash</span>
+                    </label>
+                    <label id='card'
+                        class="donation__radiobuttons-period__item donation__radiobuttons-period__item--active">
+                        <input type="radio" name="paymentMethod" value="card">
+                        <span class="value">Card</span>
+                    </label>
+                </div>
+
+                <fieldset class="checkbox-wrapper">
+                    <legend>Choose your gift:</legend>
+
+                    <label for="pack">
+                        <input type="checkbox" id="pack" name="pack" checked>
+                        Pack as a gift</label>
+
+
+                    <label for="postcard">
+                        <input type="checkbox" id="postcard" name="postcard">
+                        Add postcard
+                    </label>
+
+                    <label for="discount">
+                        <input type="checkbox" id="discount" name="discount">
+                        2% discount for the next order
+                    </label>
+
+                    <label for="pen">
+                        <input type="checkbox" id="pen" name="pen">
+                        Branded pen or pencil
+                    </label>
+
+                </fieldset>
+                <div class="submit-wrapper"><input type='submit'></div>
+            </fieldset>
+        </form>
+    </div>
+    <script src="./script.js"></script>
 </body>
 
 </html>
