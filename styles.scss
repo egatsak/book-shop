@@ -17,6 +17,7 @@ body {
 
 h2 {
   margin: 0;
+  margin-bottom: $base * 10;
 }
 
 .container {
@@ -99,11 +100,7 @@ main {
 .section-catalogue {
   .section-inner {
     padding-top: $base * 15;
-    padding-bottom: $base * 10;
-
-    h2 {
-      margin-bottom: $base * 10;
-    }
+    padding-bottom: $base * 15;
   }
 }
 
@@ -144,16 +141,19 @@ main {
     &-author {
       margin-bottom: $base * 2;
       text-align: center;
-      font-weight: $fw-medium;
     }
+
     &-title {
+      min-height: $base * 9;
       margin-bottom: $base;
       text-align: center;
+      font-weight: $fw-medium;
     }
+
     &-price {
       margin-bottom: $base * 2;
-      font-weight: $fw-bold;
       text-align: right;
+      font-weight: $fw-bold;
     }
   }
 
@@ -161,8 +161,86 @@ main {
     margin-left: auto;
   }
 }
-
 //=== / CATALOGUE ===
+
+//=== CART ===
+
+.cart-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: $base * 18;
+  padding-right: $base * 18;
+}
+
+.cart-item {
+  display: flex;
+  //justify-content: center;
+  align-items: center;
+  margin-bottom: $base * 10;
+  padding: $base * 4 $base * 8;
+  border-radius: $base * 4;
+  background-color: #f1f3f2;
+  box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.3);
+
+  &__img-wrapper {
+    height: $base * 30;
+    min-width: 20%;
+    text-align: center;
+
+    img {
+      height: inherit;
+      object-fit: cover;
+      vertical-align: middle;
+      box-shadow: $base $base $base * 4 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__meta {
+    width: 100%;
+    margin-left: $base * 10;
+
+    &-author {
+      margin-bottom: $base * 2;
+    }
+    &-title {
+      margin-bottom: $base;
+      font-weight: $fw-medium;
+    }
+    &-price {
+      margin-bottom: $base * 2;
+      font-weight: $fw-bold;
+      text-align: right;
+    }
+
+    .btn-group {
+      justify-content: flex-end;
+    }
+  }
+
+  /*  .btn--accent {
+    margin-left: auto;
+  } */
+}
+
+.cart-total {
+  &-amount {
+    margin-bottom: $base * 2;
+    text-align: center;
+    font-size: $base * 5;
+    font-weight: $fw-bold;
+  }
+
+  .btn-group {
+    justify-content: center;
+
+    .btn {
+      &:last-child {
+        margin-left: $base * 2;
+      }
+    }
+  }
+}
+//=== / CART ===
 
 // === FORM ===
 

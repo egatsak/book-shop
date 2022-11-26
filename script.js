@@ -1,3 +1,9 @@
+let cartBooks = [];
+
+document.body.addEventListener("click", () => {
+  console.log(cartBooks);
+});
+
 function init() {
   //==HEADER==
   const header = document.createElement("header");
@@ -39,7 +45,18 @@ function init() {
   const cartHeader = document.createElement("h2");
   cartHeader.classList.add("ta-c");
   cartHeader.textContent = "Cart";
+  const cartWrapper = document.createElement("div");
+  cartWrapper.classList.add("cart-wrapper");
+  if (!cartBooks.length) {
+    cartWrapper.textContent = "The cart is empty";
+  }
+  const cartTotal = document.createElement("div");
+  cartTotal.classList.add("cart-total");
+
   sectionInnerCart.appendChild(cartHeader);
+  sectionInnerCart.appendChild(cartWrapper);
+  sectionInnerCart.appendChild(cartTotal);
+
   cart.appendChild(sectionInnerCart);
 
   const form = document.getElementById("orderForm");
@@ -91,9 +108,11 @@ async function drawData() {
   const data = await fetchData();
   const cardWrapper = document.querySelector(".card-wrapper");
 
-  data.forEach((item) => {
+  data.forEach((item, i) => {
+    item.id = i + 1;
     const article = document.createElement("article");
     article.classList.add("card");
+    article.setAttribute("id", `card${i + 1}`);
 
     const imgWrapper = document.createElement("div");
     imgWrapper.classList.add("card__img-wrapper");
@@ -121,14 +140,21 @@ async function drawData() {
     const showMore = document.createElement("button");
     showMore.textContent = "Show more";
     showMore.classList.add("btn", "btn--primary");
-    const addToCart = document.createElement("button");
-    addToCart.textContent = "Add to Cart";
-    addToCart.classList.add("btn", "btn--accent");
+    const addToCartBtn = document.createElement("button");
+    addToCartBtn.textContent = "Add to Cart";
+    addToCartBtn.classList.add("btn", "btn--accent");
+
+    addToCartBtn.addEventListener("click", () => {
+      /* addToCart(item); */
+      if (cartBooks.find((it) => it.id === item.id)) return;
+      cartBooks.push(item);
+      drawCart();
+    });
 
     imgWrapper.appendChild(img);
 
     btnWrapper.appendChild(showMore);
-    btnWrapper.appendChild(addToCart);
+    btnWrapper.appendChild(addToCartBtn);
 
     meta.appendChild(author);
     meta.appendChild(title);
@@ -143,3 +169,168 @@ async function drawData() {
 }
 
 drawData();
+/* 
+function addToCart(item) {
+  cartBooks.push(item);
+  const cart = document.querySelector(".section-cart .section-inner");
+  const cartItem = document.createElement("div");
+  cartItem.setAttribute("id", item.id);
+  const imgWrapper = document.createElement("div");
+  imgWrapper.classList.add("card__img-wrapper");
+  const img = document.createElement("img");
+  img.setAttribute("src", item.imageLink);
+  img.setAttribute("alt", item.title);
+
+  const meta = document.createElement("div");
+  meta.classList.add("card__meta");
+
+  const author = document.createElement("div");
+  author.textContent = item.author;
+  author.classList.add("card__meta-author");
+  const title = document.createElement("div");
+  title.textContent = item.title;
+  title.classList.add("card__meta-title");
+
+  const price = document.createElement("div");
+  price.textContent = `${item.price}` + " $";
+  price.classList.add("card__meta-price");
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "X";
+  deleteBtn.classList.add("btn", "btn--accent");
+  deleteBtn.addEventListener("click", () => {
+    cart.removeChild(document.getElementById(item.id));
+    cartBooks = cartBooks.filter((it) => it.id !== item.id);
+  });
+
+  imgWrapper.appendChild(img);
+
+  meta.appendChild(author);
+  meta.appendChild(title);
+  meta.appendChild(price);
+  meta.appendChild(deleteBtn);
+
+  cartItem.appendChild(imgWrapper);
+  cartItem.appendChild(meta);
+  cart.appendChild(cartItem);
+}
+ */
+
+function drawCart() {
+  const cart = document.querySelector(".cart-wrapper");
+
+  if (!cartBooks.length) {
+    cart.textContent = "The cart is empty";
+    return;
+  }
+
+  if (cart.textContent) {
+    cart.textContent = "";
+  }
+  //const cart = document.querySelector(".cart-wrapper");
+
+  while (cart.firstChild) {
+    cart.removeChild(cart.firstChild);
+  }
+
+  cartBooks.forEach((item) => {
+    const cartItem = document.createElement("div");
+    cartItem.setAttribute("id", item.id);
+    cartItem.classList.add("cart-item");
+
+    const imgWrapper = document.createElement("div");
+    imgWrapper.classList.add("cart-item__img-wrapper");
+    const img = document.createElement("img");
+    img.setAttribute("src", item.imageLink);
+    img.setAttribute("alt", item.title);
+
+    const meta = document.createElement("div");
+    meta.classList.add("cart-item__meta");
+
+    const author = document.createElement("div");
+    author.textContent = item.author;
+    author.classList.add("cart-item__meta-author");
+    const title = document.createElement("div");
+    title.textContent = item.title;
+    title.classList.add("cart-item__meta-title");
+    const price = document.createElement("div");
+    price.textContent = `${item.price}` + " $";
+    price.classList.add("cart-item__meta-price");
+    const btnWrapper = document.createElement("div");
+    btnWrapper.classList.add("btn-group");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "X";
+    deleteBtn.classList.add("btn", "btn--accent");
+
+    deleteBtn.addEventListener("click", () => {
+      cart.removeChild(document.getElementById(item.id));
+      cartBooks = cartBooks.filter((it) => it.id !== item.id);
+      if (cartBooks.length === 0) {
+        const cartTotal = document.querySelector(".cart-total");
+        while (cartTotal.firstChild) {
+          cartTotal.removeChild(cartTotal.firstChild);
+        }
+        if (!cartBooks.length) {
+          cart.textContent = "The cart is empty";
+        }
+      }
+    });
+
+    btnWrapper.appendChild(deleteBtn);
+    imgWrapper.appendChild(img);
+
+    meta.appendChild(author);
+    meta.appendChild(title);
+    meta.appendChild(price);
+    meta.appendChild(btnWrapper);
+
+    cartItem.appendChild(imgWrapper);
+    cartItem.appendChild(meta);
+    cart.appendChild(cartItem);
+  });
+
+  drawCartTotal();
+}
+
+function drawCartTotal() {
+  const cartTotal = document.querySelector(".cart-total");
+  while (cartTotal?.firstChild) {
+    cartTotal.removeChild(cartTotal.firstChild);
+  }
+  const cartWrapper = document.querySelector(".cart-wrapper");
+
+  const totalAmount = document.createElement("div");
+  totalAmount.classList.add("cart-total-amount");
+  totalAmount.textContent = `Total: ${cartBooks.reduce(
+    (acc, curr) => acc + curr.price,
+    0
+  )} $`;
+
+  const btnWrapper = document.createElement("div");
+  btnWrapper.classList.add("btn-group");
+  const clearAllBtn = document.createElement("button");
+  clearAllBtn.textContent = "Clear all";
+  clearAllBtn.classList.add("btn", "btn--accent");
+
+  clearAllBtn.addEventListener("click", () => {
+    cartBooks.length = 0;
+    while (cartWrapper?.firstChild) {
+      cartWrapper.removeChild(cartWrapper.firstChild);
+    }
+    while (cartTotal?.firstChild) {
+      cartTotal.removeChild(cartTotal.firstChild);
+    }
+    cartWrapper.textContent = "The cart is empty.";
+  });
+
+  const orderBtn = document.createElement("button");
+  orderBtn.textContent = "Order";
+  orderBtn.classList.add("btn", "btn--primary");
+
+  orderBtn.addEventListener("click", () => {});
+
+  btnWrapper.appendChild(clearAllBtn);
+  btnWrapper.appendChild(orderBtn);
+
+  cartTotal.appendChild(totalAmount);
+  cartTotal.appendChild(btnWrapper);
+}
