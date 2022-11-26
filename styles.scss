@@ -30,7 +30,7 @@ h2 {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: $base * 4 $base * 5 $base * 4;
+  padding: $base * 5;
 }
 
 .btn-group {
@@ -50,15 +50,27 @@ h2 {
   color: #fdfdff;
   cursor: pointer;
   transition: $transition;
+
   &:hover {
     background: #fdfdff;
     border: 1px solid #333b41;
-
     color: #333b41;
   }
+
   &--primary {
   }
   &--accent {
+  }
+}
+
+.input {
+  padding: $base * 2 $base * 2;
+  border-radius: $base * 2;
+  border: 1px solid #333b41;
+  outline: transparent;
+
+  &:invalid:not(:focus):not(:placeholder-shown) {
+    border: 1px solid red;
   }
 }
 
@@ -164,7 +176,11 @@ main {
 //=== / CATALOGUE ===
 
 //=== CART ===
-
+.section-cart {
+  .section-inner {
+    padding-bottom: $base * 15;
+  }
+}
 .cart-wrapper {
   display: flex;
   flex-direction: column;
@@ -243,19 +259,72 @@ main {
 //=== / CART ===
 
 // === FORM ===
-
-.input-label {
-  display: block;
+.section-order-form {
 }
 
-.input-label > * {
-  display: inline-block;
+.order-form-wrapper {
 }
 
-.checkbox-wrapper {
-  border: none;
-  margin: 0;
-  padding: 0;
+.order-form {
+  display: flex;
+  flex-direction: column;
+
+  &:invalid #submit {
+    opacity: 0.5;
+    color: black;
+
+    &:hover {
+      cursor: default;
+      background-color: #ababab;
+      border: 1px solid #fdfdff;
+    }
+  }
+
+  & > :not(:last-child) {
+    margin-bottom: $base * 3;
+  }
+
+  &__name {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__address {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__date {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__radio {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__checkbox {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .label {
+    &--input {
+      span {
+        padding-left: $base;
+      }
+      input {
+        display: block;
+      }
+    }
+  }
+
+  .checkbox-wrapper {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
 }
 // === / FORM ===
 

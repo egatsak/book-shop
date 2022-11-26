@@ -15,60 +15,92 @@
 
 <body>
     <div class="container">
-        <form id="orderForm">
-            <fieldset>
-                <legend>Please fill up the form</legend>
-                <div class="name-wrapper">
-                    <label class='input-label' for="name">Name</label><input id="name" name="name" type="text">
-                    <label class='input-label' for="surname">Surname</label><input id="surname" name='surname'
-                        type="text">
-                </div>
-                <div class="address-wrapper">
-                    <label class='input-label' for="street">Street<input id="street" type="text"></label>
-                    <label class='input-label' for="houseNumber">House<input id="houseNumber" type="number"></label>
-                    <label class='input-label' for="flatNumber">Apartment<input id="flatNumber" type="number"></label>
-                </div>
-                <div class="date-wrapper">
-                    <input id='date' type="date">
-                </div>
+        <form id="orderForm" class="order-form-wrapper">
+            <fieldset class="order-form">
+                <legend>Please fill up the delivery form</legend>
 
-                <div class="radio-wrapper"> Payment method: <label id='cash'
-                        class="donation__radiobuttons-period__item">
-                        <input type="radio" name="paymentMethod" value="cash" checked>
-                        <span>Cash</span>
+                <div class="order-form__name">
+                    <label class='label--input' for="name">
+                        <span>Name</span>
+                        <input id="name" name="name" type="text" class="input" minlength="4" pattern='[A-Za-z]{4,}'
+                            required placeholder=" " title="Please enter at least 4 letters and only letters">
                     </label>
-                    <label id='card'
-                        class="donation__radiobuttons-period__item donation__radiobuttons-period__item--active">
-                        <input type="radio" name="paymentMethod" value="card">
-                        <span class="value">Card</span>
+                    <label class='label--input' for="surname">
+                        <span>Surname</span>
+                        <input id="surname" name='surname' type="text" class="input" minlength="5"
+                            pattern='[A-Za-z]{5,}' required placeholder=" "
+                            title="Please enter at least 5 letters and only letters">
                     </label>
                 </div>
 
-                <fieldset class="checkbox-wrapper">
+                <div class="order-form__address">
+                    <label class='label--input' for="street">
+                        <span>Street</span>
+                        <input id="street" type="text" class="input" pattern='[\dA-Za-z\s]{5,}' required placeholder=" "
+                            title="Please enter at least 5 letters or digits (incl. whitespaces)">
+                    </label>
+                    <label class='label--input' for="houseNumber">
+                        <span>House</span>
+                        <input id="houseNumber" type="number" class="input" required min='1' placeholder=" "
+                            title="Positive numbers only">
+                    </label>
+                    <label class='label--input' for="flatNumber">
+                        <span>Apartment</span>
+                        <input id="flatNumber" type="string" class="input" required placeholder=" "
+                            pattern='\d+(-[\d]+)?'
+                            title="Please enter positive numbers with optional hyphen in the middle">
+                    </label>
+                </div>
+
+                <div class="order-form__date">
+                    <label class='label--input' for="date">
+                        <span>Delivery date</span>
+                        <input id='date' type="date" name="date" class="input input--date">
+                    </label>
+                    <label class='label--input' for="email">
+                        <span>Email</span>
+                        <input id='email' type="email" name="email" class="input" required placeholder=" ">
+                    </label>
+                </div>
+
+                <div class="order-form__radio">
+                    <label class="" for="cash" class="label--checkbox">
+                        <input id='cash' type="radio" name="paymentMethod" value="cash" checked>
+                        Cash
+                    </label>
+
+                    <label for="card" class="label--checkbox">
+                        <input id='card' type="radio" name="paymentMethod" value="card">
+                        Card
+                    </label>
+
+                </div>
+
+                <fieldset class="order-form__checkbox">
                     <legend>Choose your gift:</legend>
 
-                    <label for="pack">
-                        <input type="checkbox" id="pack" name="pack" checked>
+                    <label for="pack" class="label--checkbox">
+                        <input type="checkbox" id="pack" name="pack">
                         Pack as a gift</label>
 
 
-                    <label for="postcard">
+                    <label for="postcard" class="label--checkbox">
                         <input type="checkbox" id="postcard" name="postcard">
                         Add postcard
                     </label>
 
-                    <label for="discount">
+                    <label for="discount" class="label--checkbox">
                         <input type="checkbox" id="discount" name="discount">
                         2% discount for the next order
                     </label>
 
-                    <label for="pen">
+                    <label for="pen" class="label--checkbox">
                         <input type="checkbox" id="pen" name="pen">
                         Branded pen or pencil
                     </label>
 
                 </fieldset>
-                <div class="submit-wrapper"><input type='submit'></div>
+                <div class="order-form__submit"><input id='submit' type='submit' class="btn btn--primary"></div>
             </fieldset>
         </form>
     </div>

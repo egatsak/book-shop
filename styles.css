@@ -21,7 +21,7 @@ h2 {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 16px 20px 16px;
+  padding: 20px;
 }
 
 .btn-group {
@@ -47,6 +47,16 @@ h2 {
   border: 1px solid #333b41;
   color: #333b41;
 }
+.input {
+  padding: 8px 8px;
+  border-radius: 8px;
+  border: 1px solid #333b41;
+  outline: transparent;
+}
+.input:invalid:not(:focus):not(:placeholder-shown) {
+  border: 1px solid red;
+}
+
 .ta-c {
   text-align: center;
 }
@@ -129,6 +139,10 @@ main {
   margin-left: auto;
 }
 
+.section-cart .section-inner {
+  padding-bottom: 60px;
+}
+
 .cart-wrapper {
   display: flex;
   flex-direction: column;
@@ -192,15 +206,49 @@ main {
   margin-left: 8px;
 }
 
-.input-label {
+.order-form {
+  display: flex;
+  flex-direction: column;
+}
+.order-form:invalid #submit {
+  opacity: 0.5;
+  color: black;
+}
+.order-form:invalid #submit:hover {
+  cursor: default;
+  background-color: #ababab;
+  border: 1px solid #fdfdff;
+}
+.order-form > :not(:last-child) {
+  margin-bottom: 12px;
+}
+.order-form__name {
+  display: flex;
+  justify-content: center;
+}
+.order-form__address {
+  display: flex;
+  justify-content: center;
+}
+.order-form__date {
+  display: flex;
+  justify-content: center;
+}
+.order-form__radio {
+  display: flex;
+  justify-content: center;
+}
+.order-form__checkbox {
+  display: flex;
+  justify-content: space-evenly;
+}
+.order-form .label--input span {
+  padding-left: 4px;
+}
+.order-form .label--input input {
   display: block;
 }
-
-.input-label > * {
-  display: inline-block;
-}
-
-.checkbox-wrapper {
+.order-form .checkbox-wrapper {
   border: none;
   margin: 0;
   padding: 0;

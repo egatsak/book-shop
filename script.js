@@ -22,9 +22,7 @@ function init() {
   sectionInnerHeader.appendChild(logo);
 
   //==MAIN==
-
   const main = document.createElement("main");
-
   const catalogue = document.createElement("section");
   const sectionInnerCatalogue = document.createElement("div");
   sectionInnerCatalogue.classList.add("section-inner");
@@ -38,6 +36,7 @@ function init() {
   sectionInnerCatalogue.appendChild(cardWrapper);
   catalogue.appendChild(sectionInnerCatalogue);
 
+  //==CART==
   const cart = document.createElement("section");
   cart.classList.add("section-cart");
   const sectionInnerCart = document.createElement("div");
@@ -48,7 +47,7 @@ function init() {
   const cartWrapper = document.createElement("div");
   cartWrapper.classList.add("cart-wrapper");
   if (!cartBooks.length) {
-    cartWrapper.textContent = "The cart is empty";
+    cartWrapper.textContent = "The cart is empty.";
   }
   const cartTotal = document.createElement("div");
   cartTotal.classList.add("cart-total");
@@ -59,14 +58,33 @@ function init() {
 
   cart.appendChild(sectionInnerCart);
 
+  //===FORM
   const form = document.getElementById("orderForm");
+  let today = new Date();
+  let tomorrow = new Date(today.setDate(today.getDate() + 1))
+    .toISOString()
+    .split("T")[0];
+  const inputDate = document.querySelector("#date");
+  inputDate?.setAttribute("min", tomorrow);
+  inputDate?.setAttribute("value", tomorrow);
+  const formSubmitBtn = document.querySelector("#submit");
+  formSubmitBtn.setAttribute("disabled", "true");
+
   form.remove();
-  form.classList.add("section-order-form");
   const orderForm = document.createElement("section");
   orderForm.classList.add("section-order-form");
   const sectionInnerForm = document.createElement("div");
   sectionInnerForm.classList.add("section-inner");
+  const formHeader = document.createElement("h2");
+  formHeader.classList.add("ta-c");
+  formHeader.textContent = "Form";
+  sectionInnerForm.appendChild(formHeader);
+
   sectionInnerForm.appendChild(form);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+  });
   orderForm.appendChild(sectionInnerForm);
 
   main.appendChild(catalogue);
@@ -93,6 +111,10 @@ async function fetchData() {
   try {
     const response = await fetch("./books.json");
     const data = await response.json();
+
+    if (!response.status) {
+      throw new Error("Something went wrong!");
+    }
 
     if (data) {
       return data;
@@ -148,11 +170,11 @@ async function drawData() {
       /* addToCart(item); */
       if (cartBooks.find((it) => it.id === item.id)) return;
       cartBooks.push(item);
+      enableSubmit();
       drawCart();
     });
 
     imgWrapper.appendChild(img);
-
     btnWrapper.appendChild(showMore);
     btnWrapper.appendChild(addToCartBtn);
 
@@ -220,13 +242,13 @@ function drawCart() {
 
   if (!cartBooks.length) {
     cart.textContent = "The cart is empty";
+    disableSubmit();
     return;
   }
 
   if (cart.textContent) {
     cart.textContent = "";
   }
-  //const cart = document.querySelector(".cart-wrapper");
 
   while (cart.firstChild) {
     cart.removeChild(cart.firstChild);
@@ -303,7 +325,7 @@ function drawCartTotal() {
   totalAmount.textContent = `Total: ${cartBooks.reduce(
     (acc, curr) => acc + curr.price,
     0
-  )} $`;
+  )} $, ${cartBooks.length} items`;
 
   const btnWrapper = document.createElement("div");
   btnWrapper.classList.add("btn-group");
@@ -333,4 +355,14 @@ function drawCartTotal() {
 
   cartTotal.appendChild(totalAmount);
   cartTotal.appendChild(btnWrapper);
+}
+
+function disableSubmit() {
+  const formSubmitBtn = document.querySelector("#submit");
+  formSubmitBtn.setAttribute("disabled", "true");
+}
+
+function enableSubmit() {
+  const formSubmitBtn = document.querySelector("#submit");
+  formSubmitBtn.removeAttribute("disabled");
 }
