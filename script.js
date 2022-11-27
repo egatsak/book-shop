@@ -356,6 +356,7 @@ function drawCart() {
     deleteBtn.addEventListener("click", () => {
       cart.removeChild(document.getElementById(item.id));
       cartBooks = cartBooks.filter((it) => it.id !== item.id);
+      drawCartTotal();
       if (!cartBooks.length) {
         cart.textContent = "The cart is empty";
         disableSubmit();

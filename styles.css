@@ -118,6 +118,14 @@ main {
   grid-gap: 40px;
   justify-items: center;
 }
+@media (max-width: 850px) {
+  .card-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
 
 .card {
   position: relative;
@@ -129,6 +137,12 @@ main {
   border-radius: 16px;
   background-color: #f1f3f2;
   box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 548px) {
+  .card {
+    width: 280px;
+    padding: 16px 4px;
+  }
 }
 .card .popup {
   position: absolute;
@@ -158,7 +172,6 @@ main {
 .card__img-wrapper {
   height: 300px;
   margin-bottom: 16px;
-  object-fit: cover;
   box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.2);
 }
 .card__img-wrapper img {
@@ -191,8 +204,12 @@ main {
 .cart-wrapper {
   display: flex;
   flex-direction: column;
-  padding-left: 72px;
-  padding-right: 72px;
+}
+@media (max-width: 850px) {
+  .cart-wrapper {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 }
 
 .cart-item {
@@ -203,6 +220,16 @@ main {
   border-radius: 16px;
   background-color: #f1f3f2;
   box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 548px) {
+  .cart-item {
+    padding: 16px 12px;
+  }
+}
+@media (max-width: 400px) {
+  .cart-item {
+    padding: 8px 8px;
+  }
 }
 .cart-item__img-wrapper {
   height: 120px;
@@ -277,9 +304,15 @@ main {
 .order-form__name, .order-form__address, .order-form__date, .order-form__radio {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .order-form__name label:not(:first-child), .order-form__address label:not(:first-child), .order-form__date label:not(:first-child), .order-form__radio label:not(:first-child) {
   margin-left: 12px;
+}
+@media (max-width: 548px) {
+  .order-form__name label:not(:first-child), .order-form__address label:not(:first-child), .order-form__date label:not(:first-child), .order-form__radio label:not(:first-child) {
+    margin-left: 0;
+  }
 }
 .order-form__checkbox {
   display: flex;
@@ -287,8 +320,16 @@ main {
   padding-top: 4px;
   width: 90%;
 }
+@media (max-width: 548px) {
+  .order-form__checkbox {
+    flex-direction: column;
+  }
+}
 .order-form__submit {
   text-align: center;
+}
+.order-form .label--input {
+  padding-top: 8px;
 }
 .order-form .label--input span {
   padding-left: 4px;
@@ -298,6 +339,11 @@ main {
 }
 .order-form .label--checkbox {
   cursor: pointer;
+}
+@media (max-width: 548px) {
+  .order-form .label--checkbox {
+    padding: 4px 0;
+  }
 }
 
 footer {

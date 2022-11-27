@@ -138,10 +138,15 @@ main {
 .card-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
   grid-gap: $base * 10;
   justify-items: center;
-  //align-content: center;
+
+  @media (max-width: 850px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .card {
@@ -154,6 +159,11 @@ main {
   border-radius: $base * 4;
   background-color: #f1f3f2;
   box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 548px) {
+    width: $base * 70;
+    padding: $base * 4 $base;
+  }
 
   .popup {
     position: absolute;
@@ -187,7 +197,6 @@ main {
   &__img-wrapper {
     height: $base * 75;
     margin-bottom: $base * 4;
-    object-fit: cover;
     box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.2);
 
     img {
@@ -232,8 +241,11 @@ main {
 .cart-wrapper {
   display: flex;
   flex-direction: column;
-  padding-left: $base * 18;
-  padding-right: $base * 18;
+
+  @media (max-width: 850px) {
+    padding-left: $base * 2;
+    padding-right: $base * 2;
+  }
 }
 
 .cart-item {
@@ -244,7 +256,12 @@ main {
   border-radius: $base * 4;
   background-color: #f1f3f2;
   box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.3);
-
+  @media (max-width: 548px) {
+    padding: $base * 4 $base * 3;
+  }
+  @media (max-width: 400px) {
+    padding: $base * 2 $base * 2;
+  }
   &__img-wrapper {
     height: $base * 30;
     min-width: 20%;
@@ -342,9 +359,14 @@ main {
   &__radio {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 
     & label:not(:first-child) {
       margin-left: $base * 3;
+
+      @media (max-width: 548px) {
+        margin-left: 0;
+      }
     }
   }
 
@@ -353,6 +375,10 @@ main {
     justify-content: space-evenly;
     padding-top: $base;
     width: 90%;
+
+    @media (max-width: 548px) {
+      flex-direction: column;
+    }
   }
 
   &__submit {
@@ -361,6 +387,7 @@ main {
 
   .label {
     &--input {
+      padding-top: $base * 2;
       span {
         padding-left: $base;
       }
@@ -370,6 +397,10 @@ main {
     }
     &--checkbox {
       cursor: pointer;
+
+      @media (max-width: 548px) {
+        padding: $base 0;
+      }
     }
   }
 }
