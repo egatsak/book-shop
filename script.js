@@ -1,8 +1,5 @@
 let cartBooks = [];
-
-document.body.addEventListener("click", () => {
-  console.log(cartBooks);
-});
+let orderDetails = [];
 
 function init() {
   //==HEADER==
@@ -73,6 +70,7 @@ function init() {
   form.remove();
   const orderForm = document.createElement("section");
   orderForm.classList.add("section-order-form");
+  orderForm.setAttribute("id", "section-order-form");
   const sectionInnerForm = document.createElement("div");
   sectionInnerForm.classList.add("section-inner");
   const formHeader = document.createElement("h2");
@@ -84,27 +82,117 @@ function init() {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    new FormData(form);
   });
+
+  form.addEventListener("formdata", (event) => {
+    // event.formData grabs the object
+    const data = event.formData;
+
+    // get the data
+    orderDetails = [...data.entries()];
+
+    for (let item of cartBooks) {
+      orderDetails.push(["Ordered book", item.title]);
+    }
+
+    const details = document.createElement("div");
+    const detailsHeader = document.createElement("h3");
+
+    detailsHeader.classList.add("ta-c");
+    detailsHeader.textContent =
+      "Your order (smth like this will be sent to backend):";
+    for (let item of orderDetails) {
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("ta-c");
+      itemDiv.textContent = `${item[0]} : ${item[1]}`;
+      details.appendChild(itemDiv);
+    }
+    sectionInnerForm.appendChild(detailsHeader);
+    const thankYou = document.createElement("div");
+    thankYou.classList.add("ta-c");
+    thankYou.textContent = "Thank you for shopping!";
+    thankYou.style.marginTop = "40px";
+    details.appendChild(thankYou);
+
+    sectionInnerForm.appendChild(details);
+    cartBooks.length = 0;
+    drawCart();
+    const cartTotal = document.querySelector(".cart-total");
+    while (cartTotal.firstChild) {
+      cartTotal.removeChild(cartTotal.firstChild);
+    }
+    const inputs = document.querySelectorAll(".input");
+    inputs.forEach((item) => {
+      item.value = "";
+    });
+
+    let checkBoxGroup = Array.from(
+      orderForm.querySelectorAll(".checkbox")
+    );
+
+    for (let item of checkBoxGroup) {
+      item.checked = false;
+    }
+  });
+
   orderForm.appendChild(sectionInnerForm);
 
   main.appendChild(catalogue);
   main.appendChild(cart);
   main.appendChild(orderForm);
 
+  function checkBoxLimit() {
+    const checkBoxGroup = Array.from(
+      orderForm.querySelectorAll(".checkbox")
+    );
+    const limit = 2;
+    for (let i = 0; i < checkBoxGroup.length; i++) {
+      checkBoxGroup[i].onclick = function () {
+        let checkedcount = 0;
+        for (let j = 0; j < checkBoxGroup.length; j++) {
+          checkedcount += checkBoxGroup[j].checked ? 1 : 0;
+        }
+        if (checkedcount > limit) {
+          alert("You can select maximum of " + limit + " gifts!");
+          this.checked = false;
+        }
+      };
+    }
+  }
+  checkBoxLimit();
+
   //==FOOTER==
   const footer = document.createElement("footer");
+  const footerFragment = new DocumentFragment();
   footer.classList.add("section-footer");
   const sectionInnerFooter = document.createElement("div");
   sectionInnerFooter.classList.add("section-inner");
   const footerContent = document.createElement("div");
-  footerContent.textContent = "Footer";
-  sectionInnerFooter.appendChild(footerContent);
-  footer.appendChild(sectionInnerFooter);
+  footerContent.classList.add("ta-c");
+  const footerLink = document.createElement("a");
+  footerLink.setAttribute("href", "https://github.com/egatsak");
+  footerLink.textContent = "egatsak";
+  const rsLink = document.createElement("a");
+  rsLink.setAttribute("href", "https://rs.school/");
+  rsLink.textContent = "RS School";
+
+  const textNode = document.createTextNode(" 2022 ");
+  footerContent.appendChild(footerLink);
+  footerContent.appendChild(textNode);
+  footerContent.appendChild(rsLink);
+  sectionInnerFooter.append(footerContent);
+  footerFragment.append(sectionInnerFooter);
+  footer.appendChild(footerFragment);
 
   const container = document.querySelector(".container");
-  container.insertAdjacentElement("beforeend", header);
-  container.insertAdjacentElement("beforeend", main);
-  container.insertAdjacentElement("beforeend", footer);
+  const containerFragment = new DocumentFragment();
+
+  containerFragment.append(header);
+  containerFragment.append(main);
+  containerFragment.append(footer);
+
+  container.appendChild(containerFragment);
 }
 
 async function fetchData() {
@@ -162,17 +250,43 @@ async function drawData() {
     const showMore = document.createElement("button");
     showMore.textContent = "Show more";
     showMore.classList.add("btn", "btn--primary");
+
+    showMore.addEventListener("click", () => {
+      const popup = document.querySelector(`#popup${i + 1}`);
+      popup.classList.toggle("popup--visible");
+    });
+
     const addToCartBtn = document.createElement("button");
     addToCartBtn.textContent = "Add to Cart";
-    addToCartBtn.classList.add("btn", "btn--accent");
+    addToCartBtn.classList.add("btn", "btn--primary");
 
     addToCartBtn.addEventListener("click", () => {
-      /* addToCart(item); */
       if (cartBooks.find((it) => it.id === item.id)) return;
       cartBooks.push(item);
       enableSubmit();
       drawCart();
     });
+
+    const popup = document.createElement("div");
+    popup.classList.add("popup");
+    popup.setAttribute("id", `popup${i + 1}`);
+    const popupBtnWrapper = document.createElement("div");
+    popupBtnWrapper.classList.add("popup-btn-wrapper");
+    const popupBtn = document.createElement("button");
+    popupBtn.classList.add("btn", "btn--accent");
+    popupBtn.textContent = "x";
+    popupBtn.addEventListener("click", () => {
+      const popup = document.querySelector(`#popup${i + 1}`);
+      popup.classList.remove("popup--visible");
+    });
+
+    const textDescription = document.createElement("div");
+    textDescription.classList.add("popup-description");
+    textDescription.textContent = item.description;
+
+    popupBtnWrapper.appendChild(popupBtn);
+    popup.appendChild(textDescription);
+    popup.appendChild(popupBtnWrapper);
 
     imgWrapper.appendChild(img);
     btnWrapper.appendChild(showMore);
@@ -185,57 +299,13 @@ async function drawData() {
 
     article.appendChild(imgWrapper);
     article.appendChild(meta);
+    article.appendChild(popup);
 
     cardWrapper.appendChild(article);
   });
 }
 
 drawData();
-/* 
-function addToCart(item) {
-  cartBooks.push(item);
-  const cart = document.querySelector(".section-cart .section-inner");
-  const cartItem = document.createElement("div");
-  cartItem.setAttribute("id", item.id);
-  const imgWrapper = document.createElement("div");
-  imgWrapper.classList.add("card__img-wrapper");
-  const img = document.createElement("img");
-  img.setAttribute("src", item.imageLink);
-  img.setAttribute("alt", item.title);
-
-  const meta = document.createElement("div");
-  meta.classList.add("card__meta");
-
-  const author = document.createElement("div");
-  author.textContent = item.author;
-  author.classList.add("card__meta-author");
-  const title = document.createElement("div");
-  title.textContent = item.title;
-  title.classList.add("card__meta-title");
-
-  const price = document.createElement("div");
-  price.textContent = `${item.price}` + " $";
-  price.classList.add("card__meta-price");
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "X";
-  deleteBtn.classList.add("btn", "btn--accent");
-  deleteBtn.addEventListener("click", () => {
-    cart.removeChild(document.getElementById(item.id));
-    cartBooks = cartBooks.filter((it) => it.id !== item.id);
-  });
-
-  imgWrapper.appendChild(img);
-
-  meta.appendChild(author);
-  meta.appendChild(title);
-  meta.appendChild(price);
-  meta.appendChild(deleteBtn);
-
-  cartItem.appendChild(imgWrapper);
-  cartItem.appendChild(meta);
-  cart.appendChild(cartItem);
-}
- */
 
 function drawCart() {
   const cart = document.querySelector(".cart-wrapper");
@@ -286,13 +356,12 @@ function drawCart() {
     deleteBtn.addEventListener("click", () => {
       cart.removeChild(document.getElementById(item.id));
       cartBooks = cartBooks.filter((it) => it.id !== item.id);
-      if (cartBooks.length === 0) {
+      if (!cartBooks.length) {
+        cart.textContent = "The cart is empty";
+        disableSubmit();
         const cartTotal = document.querySelector(".cart-total");
         while (cartTotal.firstChild) {
           cartTotal.removeChild(cartTotal.firstChild);
-        }
-        if (!cartBooks.length) {
-          cart.textContent = "The cart is empty";
         }
       }
     });
@@ -335,6 +404,7 @@ function drawCartTotal() {
 
   clearAllBtn.addEventListener("click", () => {
     cartBooks.length = 0;
+    disableSubmit();
     while (cartWrapper?.firstChild) {
       cartWrapper.removeChild(cartWrapper.firstChild);
     }
@@ -344,11 +414,11 @@ function drawCartTotal() {
     cartWrapper.textContent = "The cart is empty.";
   });
 
-  const orderBtn = document.createElement("button");
+  const orderBtn = document.createElement("a");
   orderBtn.textContent = "Order";
   orderBtn.classList.add("btn", "btn--primary");
 
-  orderBtn.addEventListener("click", () => {});
+  orderBtn.setAttribute("href", "#section-order-form");
 
   btnWrapper.appendChild(clearAllBtn);
   btnWrapper.appendChild(orderBtn);
