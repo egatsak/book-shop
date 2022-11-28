@@ -44,7 +44,7 @@
                     <label class='label--input' for="houseNumber">
                         <span>House</span>
                         <input id="houseNumber" name='houseNumber' type="number" class="input" required min='1'
-                            placeholder=" " title="Positive numbers only">
+                            placeholder=" " title="Please enter positive numbers only">
                     </label>
                     <label class='label--input' for="flatNumber">
                         <span>Apartment</span>
@@ -57,11 +57,12 @@
                 <div class="order-form__date">
                     <label class='label--input' for="deliveryDate">
                         <span>Delivery date</span>
-                        <input id='date' type="date" name="deliveryDeate" class="input input--date">
+                        <input id='date' type="date" name="deliveryDate" class="input input--date">
                     </label>
                     <label class='label--input' for="email">
                         <span>Email</span>
-                        <input id='email' type="email" name="email" class="input" required placeholder=" ">
+                        <input id='email' type="email" name="email" class="input" required placeholder=" "
+                            title="Please enter valid email">
                     </label>
                 </div>
 
@@ -102,7 +103,8 @@
                     </label>
 
                 </fieldset>
-                <div class="order-form__submit"><input id='submit' name='submit' type='submit' class="btn btn--primary">
+                <div class="order-form__submit"><input id='submit' name='submit' type='submit' class="btn btn--primary"
+                        value="Confirm">
                 </div>
             </fieldset>
         </form>

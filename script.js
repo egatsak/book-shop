@@ -1,4 +1,5 @@
 let cartBooks = [];
+let books = [];
 let orderDetails = [];
 
 function init() {
@@ -38,6 +39,10 @@ function init() {
   cart.classList.add("section-cart");
   const sectionInnerCart = document.createElement("div");
   sectionInnerCart.classList.add("section-inner");
+  sectionInnerCart.addEventListener("dragover", (e) => {
+    e.preventDefault();
+  });
+  sectionInnerCart.addEventListener("drop", drop);
   const cartHeader = document.createElement("h2");
   cartHeader.classList.add("ta-c");
   cartHeader.textContent = "Cart";
@@ -154,7 +159,7 @@ function init() {
           checkedcount += checkBoxGroup[j].checked ? 1 : 0;
         }
         if (checkedcount > limit) {
-          alert("You can select maximum of " + limit + " gifts!");
+          alert("Please select no more than " + limit + " gifts!");
           this.checked = false;
         }
       };
@@ -229,6 +234,10 @@ async function drawData() {
     const img = document.createElement("img");
     img.setAttribute("src", item.imageLink);
     img.setAttribute("alt", item.title);
+    img.setAttribute("draggable", true);
+    img.setAttribute("data-id", i + 1);
+
+    img.addEventListener("dragstart", dragStart);
 
     const meta = document.createElement("div");
     meta.classList.add("card__meta");
@@ -303,6 +312,7 @@ async function drawData() {
 
     cardWrapper.appendChild(article);
   });
+  books = data;
 }
 
 drawData();
@@ -360,6 +370,7 @@ function drawCart() {
       if (!cartBooks.length) {
         cart.textContent = "The cart is empty";
         disableSubmit();
+        hideForm();
         const cartTotal = document.querySelector(".cart-total");
         while (cartTotal.firstChild) {
           cartTotal.removeChild(cartTotal.firstChild);
@@ -406,6 +417,7 @@ function drawCartTotal() {
   clearAllBtn.addEventListener("click", () => {
     cartBooks.length = 0;
     disableSubmit();
+    hideForm();
     while (cartWrapper?.firstChild) {
       cartWrapper.removeChild(cartWrapper.firstChild);
     }
@@ -420,6 +432,12 @@ function drawCartTotal() {
   orderBtn.classList.add("btn", "btn--primary");
 
   orderBtn.setAttribute("href", "#section-order-form");
+  orderBtn.addEventListener("click", () => {
+    const sectionOrderForm = document.querySelector(
+      "#section-order-form"
+    );
+    sectionOrderForm.classList.add("section-order-form--visible");
+  });
 
   btnWrapper.appendChild(clearAllBtn);
   btnWrapper.appendChild(orderBtn);
@@ -436,4 +454,33 @@ function disableSubmit() {
 function enableSubmit() {
   const formSubmitBtn = document.querySelector("#submit");
   formSubmitBtn.removeAttribute("disabled");
+}
+
+function showForm() {
+  const sectionOrderForm = document.querySelector(
+    "#section-order-form"
+  );
+  sectionOrderForm.classList.add("section-order-form--visible");
+}
+
+function hideForm() {
+  const sectionOrderForm = document.querySelector(
+    "#section-order-form"
+  );
+  sectionOrderForm.classList.remove("section-order-form--visible");
+}
+
+function dragStart(event) {
+  const id = event.target.getAttribute("data-id");
+  event.dataTransfer.setData("item-id", id);
+}
+
+function drop(event) {
+  event.preventDefault();
+  const data = event.dataTransfer.getData("item-id");
+  const book = books.find((item) => item.id === +data);
+  if (cartBooks.find((it) => it.id === book.id)) return;
+  cartBooks.push(book);
+  enableSubmit();
+  drawCart();
 }

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 $base: 4px;
 
 $fw-light: 300;
@@ -87,6 +91,10 @@ h2 {
   &:invalid:not(:focus):not(:placeholder-shown) {
     border: 1px solid red;
   }
+
+  &[type="date"] {
+    width: $base * 55;
+  }
 }
 
 .ta-c {
@@ -141,7 +149,7 @@ main {
   grid-gap: $base * 10;
   justify-items: center;
 
-  @media (max-width: 850px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -161,7 +169,7 @@ main {
   box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.3);
 
   @media (max-width: 548px) {
-    width: $base * 70;
+    width: $base * 75;
     padding: $base * 4 $base;
   }
 
@@ -171,7 +179,7 @@ main {
     display: none;
     z-index: 10;
     width: 90%;
-    height: 50%;
+    min-height: 40%;
     padding: $base * 2;
     border-radius: $base * 2;
     box-shadow: $base * 4 $base * 4 $base * 8 rgba(0, 0, 0, 0.5);
@@ -188,6 +196,7 @@ main {
 
     &-btn-wrapper {
       text-align: right;
+
       button {
         width: $base * 10;
       }
@@ -242,7 +251,7 @@ main {
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 850px) {
+  @media (max-width: 768px) {
     padding-left: $base * 2;
     padding-right: $base * 2;
   }
@@ -324,12 +333,15 @@ main {
 
 // === FORM ===
 .section-order-form {
+  display: none;
+
+  &--visible {
+    display: block;
+  }
+
   .section-inner {
     padding-bottom: $base * 15;
   }
-}
-
-.order-form-wrapper {
 }
 
 .order-form {
@@ -364,8 +376,16 @@ main {
     & label:not(:first-child) {
       margin-left: $base * 3;
 
-      @media (max-width: 548px) {
+      @media (max-width: 540px) {
         margin-left: 0;
+      }
+    }
+  }
+
+  &__radio {
+    & label:not(:first-child) {
+      @media (max-width: 540px) {
+        margin-left: $base * 3;
       }
     }
   }
@@ -376,7 +396,7 @@ main {
     padding-top: $base;
     width: 90%;
 
-    @media (max-width: 548px) {
+    @media (max-width: 550px) {
       flex-direction: column;
     }
   }
@@ -395,6 +415,7 @@ main {
         display: block;
       }
     }
+
     &--checkbox {
       cursor: pointer;
 
