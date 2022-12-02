@@ -142,10 +142,11 @@ function init() {
   });
 
   orderForm.appendChild(sectionInnerForm);
-
-  main.appendChild(catalogue);
-  main.appendChild(cart);
-  main.appendChild(orderForm);
+  const fragment = new DocumentFragment();
+  fragment.append(catalogue);
+  fragment.append(cart);
+  fragment.append(orderForm);
+  main.append(fragment);
 
   function checkBoxLimit() {
     const checkBoxGroup = Array.from(
@@ -222,6 +223,7 @@ init();
 async function drawData() {
   const data = await fetchData();
   const cardWrapper = document.querySelector(".card-wrapper");
+  const fragment = new DocumentFragment();
 
   data.forEach((item, i) => {
     item.id = i + 1;
@@ -310,9 +312,10 @@ async function drawData() {
     article.appendChild(meta);
     article.appendChild(popup);
 
-    cardWrapper.appendChild(article);
+    fragment.append(article);
   });
   books = data;
+  cardWrapper.appendChild(fragment);
 }
 
 drawData();
@@ -333,7 +336,7 @@ function drawCart() {
   while (cart.firstChild) {
     cart.removeChild(cart.firstChild);
   }
-
+  const fragment = new DocumentFragment();
   cartBooks.forEach((item) => {
     const cartItem = document.createElement("div");
     cartItem.setAttribute("id", item.id);
@@ -388,9 +391,9 @@ function drawCart() {
 
     cartItem.appendChild(imgWrapper);
     cartItem.appendChild(meta);
-    cart.appendChild(cartItem);
+    fragment.append(cartItem);
   });
-
+  cart.appendChild(fragment);
   drawCartTotal();
 }
 
@@ -441,9 +444,10 @@ function drawCartTotal() {
 
   btnWrapper.appendChild(clearAllBtn);
   btnWrapper.appendChild(orderBtn);
-
-  cartTotal.appendChild(totalAmount);
-  cartTotal.appendChild(btnWrapper);
+  const fragment = new DocumentFragment();
+  fragment.append(totalAmount);
+  fragment.append(btnWrapper);
+  cartTotal.appendChild(fragment);
 }
 
 function disableSubmit() {

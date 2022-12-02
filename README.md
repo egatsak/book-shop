@@ -1,12 +1,14 @@
 # BOOK-SHOP
 
-## Single-page book online store
+## Single-page online book store
 
-Built with almost empty HTML! All content is created using JavaScript.
+[Deploy at Github Pages](https://egatsak.github.io/book-shop/)
 
-Adaptive layout supports viewport width from 320px.
+Built with almost empty HTML! All content is created using vanilla JavaScript.
 
-The cart supports Drag & Drop.
+Adaptive layout supports viewport width starting from 320px.
+
+The cart supports Drag & Drop (drag a book image and drop it somewhere in the cart area).
 
 ![Screenshot 2022-11-28 112204](https://user-images.githubusercontent.com/103357389/204217538-bd8376de-fe7e-4c89-a56c-786703bf2027.jpg)
 

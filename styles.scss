@@ -179,7 +179,7 @@ main {
     display: none;
     z-index: 10;
     width: 90%;
-    min-height: 40%;
+    min-height: 30%;
     padding: $base * 2;
     border-radius: $base * 2;
     box-shadow: $base * 4 $base * 4 $base * 8 rgba(0, 0, 0, 0.5);
@@ -244,6 +244,10 @@ main {
 .section-cart {
   .section-inner {
     padding-bottom: $base * 15;
+    @media (max-width: 400px) {
+      padding-left: $base;
+      padding-right: $base;
+    }
   }
 }
 
@@ -265,16 +269,24 @@ main {
   border-radius: $base * 4;
   background-color: #f1f3f2;
   box-shadow: $base * 2 $base * 2 $base * 6 rgba(0, 0, 0, 0.3);
+
   @media (max-width: 548px) {
     padding: $base * 4 $base * 3;
   }
+
   @media (max-width: 400px) {
     padding: $base * 2 $base * 2;
   }
+
   &__img-wrapper {
     height: $base * 30;
     min-width: 20%;
     text-align: center;
+
+    @media (max-width: 400px) {
+      height: $base * 25;
+      min-width: 30%;
+    }
 
     img {
       height: inherit;
@@ -287,6 +299,11 @@ main {
   &__meta {
     width: 100%;
     margin-left: $base * 10;
+
+    @media (max-width: 400px) {
+      margin-left: $base * 2;
+      font-size: $base * 3;
+    }
 
     &-author {
       margin-bottom: $base * 2;
