@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book shop order form">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=block">
+    <link rel="stylesheet" href="../../normalize.css">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="./form.css">
+
+    <title>Book shop order form</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="section-header">
+            <div class="section-inner">
+                <h1 class="logo"><a class="logo__link" href="../../index.html" aria-label="Book shop main page">Book
+                        shop</a></h1>
+            </div>
+        </header>
+        <main>
+            <section class="section-order-form" id="section-order-form">
+                <div class="section-inner">
+                    <h2 class="ta-c">Form</h2>
+                    <form id="order-form" class="order-form-wrapper">
+                        <fieldset class="order-form">
+                            <legend>Please fill up the delivery form</legend>
+
+                            <div class="order-form__name">
+                                <label class="label--input" for="name">
+                                    <span>Name</span>
+                                    <input id="name" name="name" type="text" class="input" minlength="4"
+                                        pattern="[A-Za-z]{4,}" required="" placeholder=" "
+                                        title="Please enter at least 4 letters and only letters">
+                                </label>
+                                <label class="label--input" for="surname">
+                                    <span>Surname</span>
+                                    <input id="surname" name="surname" type="text" class="input" minlength="5"
+                                        pattern="[A-Za-z]{5,}" required="" placeholder=" "
+                                        title="Please enter at least 5 letters and only letters">
+                                </label>
+                            </div>
+
+                            <div class="order-form__address">
+                                <label class="label--input" for="street">
+                                    <span>Street</span>
+                                    <input id="street" name="street" type="text" class="input"
+                                        pattern="[\dA-Za-z\s]{5,}" required="" placeholder=" "
+                                        title="Please enter at least 5 letters or digits (incl. whitespaces)">
+                                </label>
+                                <label class="label--input" for="houseNumber">
+                                    <span>House</span>
+                                    <input id="houseNumber" name="houseNumber" type="number" class="input" required=""
+                                        min="1" placeholder=" " title="Please enter positive numbers only">
+                                </label>
+                                <label class="label--input" for="flatNumber">
+                                    <span>Apartment</span>
+                                    <input id="flatNumber" name="flatNumber" type="text" class="input" required=""
+                                        placeholder=" " pattern="\d+(-[\d]+)?"
+                                        title="Please enter positive numbers with optional hyphen in the middle">
+                                </label>
+                            </div>
+
+                            <div class="order-form__date">
+                                <label class="label--input" for="date">
+                                    <span>Delivery date</span>
+                                    <input id="date" type="date" name="deliveryDate" class="input input--date"
+                                        min="2022-12-04" value="2022-12-04">
+                                </label>
+                                <label class="label--input" for="email">
+                                    <span>Email</span>
+                                    <input id="email" type="email" name="email" class="input" required=""
+                                        placeholder=" " title="Please enter valid email">
+                                </label>
+                            </div>
+
+                            <div class="order-form__radio">
+                                <label for="cash" class="label--checkbox">
+                                    <input id="cash" type="radio" name="paymentMethod" value="cash" checked="">
+                                    Cash
+                                </label>
+
+                                <label for="card" class="label--checkbox">
+                                    <input id="card" type="radio" name="paymentMethod" value="card">
+                                    Card
+                                </label>
+
+                            </div>
+
+                            <fieldset class="order-form__checkbox">
+                                <legend>Choose up to two gifts:</legend>
+
+                                <label for="pack" class="label--checkbox">
+                                    <input type="checkbox" id="pack" name="pack" class="checkbox">
+                                    Pack as a gift</label>
+
+
+                                <label for="postcard" class="label--checkbox">
+                                    <input type="checkbox" id="postcard" name="postcard" class="checkbox">
+                                    Add postcard
+                                </label>
+
+                                <label for="discount" class="label--checkbox">
+                                    <input type="checkbox" id="discount" name="discount" class="checkbox">
+                                    2% discount for the next order
+                                </label>
+
+                                <label for="pen" class="label--checkbox">
+                                    <input type="checkbox" id="pen" name="pen" class="checkbox">
+                                    Branded pen or pencil
+                                </label>
+
+                            </fieldset>
+                            <div class="order-form__submit"><input id="submit" name="submit" type="submit"
+                                    class="btn btn--primary" value="Confirm">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <footer class="section-footer">
+            <div class="section-inner">
+                <div class="ta-c"><a href="https://github.com/egatsak">egatsak</a> 2022 <a href="https://rs.school/">RS
+                        School</a></div>
+            </div>
+        </footer>
+    </div>
+    <script src="./script.js"></script>
+</body>
+
+</html>

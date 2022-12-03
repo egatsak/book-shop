@@ -1,4 +1,4 @@
-let cartBooks = [];
+let cartBooks = JSON.parse(localStorage.getItem("cartBooks")) || [];
 let books = [];
 let orderDetails = [];
 
@@ -60,113 +60,10 @@ function init() {
 
   cart.appendChild(sectionInnerCart);
 
-  //===FORM
-  const form = document.getElementById("orderForm");
-  let today = new Date();
-  let tomorrow = new Date(today.setDate(today.getDate() + 1))
-    .toISOString()
-    .split("T")[0];
-  const inputDate = document.querySelector("#date");
-  inputDate?.setAttribute("min", tomorrow);
-  inputDate?.setAttribute("value", tomorrow);
-  const formSubmitBtn = document.querySelector("#submit");
-  formSubmitBtn.setAttribute("disabled", "true");
-
-  form.remove();
-  const orderForm = document.createElement("section");
-  orderForm.classList.add("section-order-form");
-  orderForm.setAttribute("id", "section-order-form");
-  const sectionInnerForm = document.createElement("div");
-  sectionInnerForm.classList.add("section-inner");
-  const formHeader = document.createElement("h2");
-  formHeader.classList.add("ta-c");
-  formHeader.textContent = "Form";
-  sectionInnerForm.appendChild(formHeader);
-
-  sectionInnerForm.appendChild(form);
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    new FormData(form);
-  });
-
-  form.addEventListener("formdata", (event) => {
-    // event.formData grabs the object
-    const data = event.formData;
-
-    // get the data
-    orderDetails = [...data.entries()];
-
-    for (let item of cartBooks) {
-      orderDetails.push(["Ordered book", item.title]);
-    }
-
-    const details = document.createElement("div");
-    const detailsHeader = document.createElement("h3");
-
-    detailsHeader.classList.add("ta-c");
-    detailsHeader.textContent =
-      "Your order (smth like this will be sent to backend):";
-    for (let item of orderDetails) {
-      const itemDiv = document.createElement("div");
-      itemDiv.classList.add("ta-c");
-      itemDiv.textContent = `${item[0]} : ${item[1]}`;
-      details.appendChild(itemDiv);
-    }
-    sectionInnerForm.appendChild(detailsHeader);
-    const thankYou = document.createElement("div");
-    thankYou.classList.add("ta-c");
-    thankYou.textContent = "Thank you for shopping!";
-    thankYou.style.marginTop = "40px";
-    details.appendChild(thankYou);
-
-    sectionInnerForm.appendChild(details);
-    cartBooks.length = 0;
-    drawCart();
-    const cartTotal = document.querySelector(".cart-total");
-    while (cartTotal.firstChild) {
-      cartTotal.removeChild(cartTotal.firstChild);
-    }
-    const inputs = document.querySelectorAll(".input");
-    inputs.forEach((item) => {
-      item.value = "";
-    });
-
-    let checkBoxGroup = Array.from(
-      orderForm.querySelectorAll(".checkbox")
-    );
-
-    for (let item of checkBoxGroup) {
-      item.checked = false;
-    }
-  });
-
-  orderForm.appendChild(sectionInnerForm);
   const fragment = new DocumentFragment();
   fragment.append(catalogue);
   fragment.append(cart);
-  fragment.append(orderForm);
   main.append(fragment);
-
-  function checkBoxLimit() {
-    const checkBoxGroup = Array.from(
-      orderForm.querySelectorAll(".checkbox")
-    );
-    const limit = 2;
-    for (let i = 0; i < checkBoxGroup.length; i++) {
-      checkBoxGroup[i].onclick = function () {
-        let checkedcount = 0;
-        for (let j = 0; j < checkBoxGroup.length; j++) {
-          checkedcount += checkBoxGroup[j].checked ? 1 : 0;
-        }
-        if (checkedcount > limit) {
-          alert("Please select no more than " + limit + " gifts!");
-          this.checked = false;
-        }
-      };
-    }
-  }
-  checkBoxLimit();
 
   //==FOOTER==
   const footer = document.createElement("footer");
@@ -274,8 +171,9 @@ async function drawData() {
     addToCartBtn.addEventListener("click", () => {
       if (cartBooks.find((it) => it.id === item.id)) return;
       cartBooks.push(item);
-      enableSubmit();
+      localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
       drawCart();
+      const lb = JSON.parse(localStorage.getItem("cartBooks"));
     });
 
     const popup = document.createElement("div");
@@ -324,8 +222,7 @@ function drawCart() {
   const cart = document.querySelector(".cart-wrapper");
 
   if (!cartBooks.length) {
-    cart.textContent = "The cart is empty";
-    disableSubmit();
+    cart.textContent = "The cart is empty.";
     return;
   }
 
@@ -369,11 +266,10 @@ function drawCart() {
     deleteBtn.addEventListener("click", () => {
       cart.removeChild(document.getElementById(item.id));
       cartBooks = cartBooks.filter((it) => it.id !== item.id);
+      localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
       drawCartTotal();
       if (!cartBooks.length) {
-        cart.textContent = "The cart is empty";
-        disableSubmit();
-        hideForm();
+        cart.textContent = "The cart is empty.";
         const cartTotal = document.querySelector(".cart-total");
         while (cartTotal.firstChild) {
           cartTotal.removeChild(cartTotal.firstChild);
@@ -397,6 +293,8 @@ function drawCart() {
   drawCartTotal();
 }
 
+drawCart();
+
 function drawCartTotal() {
   const cartTotal = document.querySelector(".cart-total");
   while (cartTotal?.firstChild) {
@@ -405,12 +303,9 @@ function drawCartTotal() {
   const cartWrapper = document.querySelector(".cart-wrapper");
 
   const totalAmount = document.createElement("div");
-  totalAmount.classList.add("cart-total-amount");
-  totalAmount.textContent = `Total: ${cartBooks.reduce(
-    (acc, curr) => acc + curr.price,
-    0
-  )} $, ${cartBooks.length} items`;
-
+  totalAmount.classList.add("total-amount");
+  const amount = cartBooks.reduce((acc, curr) => acc + curr.price, 0);
+  totalAmount.textContent = `Total: ${amount} $, ${cartBooks.length} items`;
   const btnWrapper = document.createElement("div");
   btnWrapper.classList.add("btn-group");
   const clearAllBtn = document.createElement("button");
@@ -419,8 +314,7 @@ function drawCartTotal() {
 
   clearAllBtn.addEventListener("click", () => {
     cartBooks.length = 0;
-    disableSubmit();
-    hideForm();
+    localStorage.removeItem("cartBooks");
     while (cartWrapper?.firstChild) {
       cartWrapper.removeChild(cartWrapper.firstChild);
     }
@@ -434,12 +328,9 @@ function drawCartTotal() {
   orderBtn.textContent = "Order";
   orderBtn.classList.add("btn", "btn--primary");
 
-  orderBtn.setAttribute("href", "#section-order-form");
+  orderBtn.setAttribute("href", "./pages/form/form.html");
   orderBtn.addEventListener("click", () => {
-    const sectionOrderForm = document.querySelector(
-      "#section-order-form"
-    );
-    sectionOrderForm.classList.add("section-order-form--visible");
+    localStorage.setItem("cartBooks", JSON.stringify(cartBooks));
   });
 
   btnWrapper.appendChild(clearAllBtn);
@@ -448,30 +339,6 @@ function drawCartTotal() {
   fragment.append(totalAmount);
   fragment.append(btnWrapper);
   cartTotal.appendChild(fragment);
-}
-
-function disableSubmit() {
-  const formSubmitBtn = document.querySelector("#submit");
-  formSubmitBtn.setAttribute("disabled", "true");
-}
-
-function enableSubmit() {
-  const formSubmitBtn = document.querySelector("#submit");
-  formSubmitBtn.removeAttribute("disabled");
-}
-
-function showForm() {
-  const sectionOrderForm = document.querySelector(
-    "#section-order-form"
-  );
-  sectionOrderForm.classList.add("section-order-form--visible");
-}
-
-function hideForm() {
-  const sectionOrderForm = document.querySelector(
-    "#section-order-form"
-  );
-  sectionOrderForm.classList.remove("section-order-form--visible");
 }
 
 function dragStart(event) {
@@ -485,6 +352,5 @@ function drop(event) {
   const book = books.find((item) => item.id === +data);
   if (cartBooks.find((it) => it.id === book.id)) return;
   cartBooks.push(book);
-  enableSubmit();
   drawCart();
 }
